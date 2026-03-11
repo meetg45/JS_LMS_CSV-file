@@ -9,6 +9,8 @@
     <h1>CSV Data Explorer</h1>
     
     <input type="file" id="csvFile" accept=".csv" />
+    <div id="loader" style="display: none;">Loading Data...</div>
+    <br><br>
     <div id="pagination">
       <button id="colSeclection">Columns</button>
       <select name="rows" id="rows">
@@ -18,12 +20,14 @@
         <option value="100">100</option>
       </select>
       <button id="prev">Prev</button>
-      <span id="page-num"></span>
+      <input type="number" id="page-num" value="1" min="1">
       <button id="next">Next</button>
+      <input type="text" id="search" placeholder="search">
+      <button id="reset">Reset</button>
     </div>
 
     <div class="output">
-      <table>
+      <table border="1">
         <thead id="table-head"></thead>
         <tbody id="table-body"></tbody>
       </table>
