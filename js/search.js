@@ -3,19 +3,37 @@ import { state } from "./state.js";
 import { savetoLocal } from "./storage.js";
 import { showTable } from "./table.js";
 
-// searching apply 
+// searching apply
 search.addEventListener("input", function () {
   const searchText = this.value.toLowerCase();
   state.searchText = searchText;
-  const baseData = Object.keys(state.sortPos).length > 0 ? state.filterData : state.tempData;
 
-  state.filterData = baseData.filter((item) => {
+  state.filterData = state.tempData.filter((item) => {
     return state.activeCheckBox.some((col) => {
       const value = item[col];
-      return value.toLowerCase().includes(searchText);
+      return value && value.toLowerCase().includes(searchText);
     });
   });
+  const column = Object.keys(state.sortPos)[0];
 
+  if (column) {
+    const order = state.sortPos[column];
+
+    state.filterData.sort((a, b) => {
+      const valA = a[column];
+      const valB = b[column];
+
+      if (!isNaN(parseFloat(valA)) && !isNaN(parseFloat(valB))) {
+        return order === "asc" ? valA - valB : valB - valA;
+      }
+
+      return order === "asc"
+        ? valA.localeCompare(valB)
+        : valB.localeCompare(valA);
+    });
+  }
+
+  state.minPage = 1;
   tableBody.innerHTML = "";
   state.minPage = 1;
   savetoLocal();

@@ -1,8 +1,9 @@
 import { state } from "./state.js";
 import { showHeaderPannel } from "./dom.js";
-import { getData,showTable } from "./table.js";
+import { getData, showTable } from "./table.js";
+import { search } from "./dom.js";
 
-// if click colums btn show header and you select the header using checkbox 
+// if click colums btn show header and you select the header using checkbox
 colSeclection.addEventListener("click", function () {
   if (state.flagForClm) {
     showHeaderPannel.style.display = "block";
@@ -22,6 +23,10 @@ colSeclection.addEventListener("click", function () {
       lable.querySelector("input").addEventListener("change", showTable);
 
       showHeaderPannel.appendChild(lable);
+
+      lable.querySelector("input").addEventListener("change", () => {
+        search.dispatchEvent(new Event("input"));
+      });
     });
     state.firstTimeClick = false;
   }
