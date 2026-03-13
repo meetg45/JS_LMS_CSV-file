@@ -25,10 +25,15 @@ let activeCheckBox;
 let flagForClm = true;
 let firstTimeClick = true;
 
+// save to LocalStorage
 function savetoLocal() {
-  localStorage.setItem("csvData", JSON.stringify(fullData));
+  const state={
+    fullData,filterData,tempData,minPage,selectsRow,sortPos,searchText:search.value
+  };
+  localStorage.setItem("csvState",JSON.stringify(state));
 }
 
+// change the row selections  
 rowsSelect.addEventListener("change", function () {
   tableBody.innerHTML = "";
   const oldRows = selectsRow;
@@ -43,6 +48,7 @@ rowsSelect.addEventListener("change", function () {
 
 fileInput.addEventListener("change", changeData);
 
+// file load..
 function changeData(event) {
   const reader = new FileReader();
   const file = event.target.files[0];
@@ -71,6 +77,7 @@ function changeData(event) {
   reader.readAsText(file);
 }
 
+// parse the csv file to json
 function parseAllCsv(csvText) {
   const rows = csvText.split("\n");
 
@@ -87,14 +94,16 @@ function parseAllCsv(csvText) {
   return data;
 }
 
+// get data..
 function getData() {
   const stIndex = (minPage - 1) * selectsRow;
   return filterData.slice(stIndex, stIndex + selectsRow);
 }
 
+// show table on frontend..
 function showTable() {
   const data = getData();
-  totalPages.textContent = `/ ${Math.ceil(filterData.length / selectsRow)}`;
+  totalPages.textContent = `/ ${Math.ceil(filterData.length / selectsRow)}`;  //total page avilable
 
   const checkBox = document.querySelectorAll(".hideCol:checked");
   activeCheckBox =
@@ -105,6 +114,7 @@ function showTable() {
   tableHead.innerHTML = "";
   const headerRow = document.createElement("tr");
 
+  // header print and show on table.
   activeCheckBox.forEach((k) => {
     const th = document.createElement("th");
     th.textContent = k;
@@ -112,6 +122,7 @@ function showTable() {
   });
   tableHead.append(headerRow);
 
+  // data print and show on table.
   tableBody.innerHTML = "";
   data.forEach((e) => {
     const row = document.createElement("tr");
@@ -128,16 +139,21 @@ function showTable() {
   next.disabled = minPage >= maxPage;
 }
 
+// next btn click show to next page.
 next.addEventListener("click", function () {
   minPage++;
+  savetoLocal();
   showTable();
 });
 
+// previous btn click show the previous page
 prev.addEventListener("click", function () {
   minPage--;
+  savetoLocal();
   showTable();
 });
 
+// accroding to page no. enter show the data 
 pageNum.addEventListener("change", function () {
   const enterVal = parseInt(this.value);
   const maxVal = Math.ceil(filterData.length / selectsRow);
@@ -149,9 +165,11 @@ pageNum.addEventListener("change", function () {
     minPage = enterVal;
   }
   tableBody.innerHTML = "";
+  savetoLocal();
   showTable();
 });
 
+// click the table header sorting apply
 tableHead.addEventListener("click", function (e) {
   const header = e.target.textContent;
   if (sortPos[header] === "asc") {
@@ -175,10 +193,12 @@ tableHead.addEventListener("click", function (e) {
 
   tableBody.innerHTML = "";
   minPage = 1;
+  savetoLocal();
   showTable();
 });
 
-search.addEventListener("change", function () {
+// searching apply 
+search.addEventListener("input", function () {
   const searchText = this.value.toLowerCase();
 
   filterData = tempData.filter((item) => {
@@ -186,19 +206,24 @@ search.addEventListener("change", function () {
   });
   tableBody.innerHTML = "";
   minPage = 1;
+  savetoLocal();
   showTable();
 });
 
+// reset the sorting and searching functionality.
 reset.addEventListener("click", function () {
   search.value = "";
   sortPos = {};
-  filterData = tempData;
+  filterData = [...fullData];
+  tempData=[...fullData];
   activeCheckBox = "";
   tableBody.innerHTML = "";
   minPage = 1;
+  savetoLocal();
   showTable();
 });
 
+// click any tableBody data show that data.
 tableBody.addEventListener("click", function (e) {
   formData.innerHTML = "";
   const clickRow = e.target.closest("tr");
@@ -223,16 +248,23 @@ closeBtn.addEventListener("click", function () {
   document.getElementById("main").classList.remove("blur");
 });
 
+
 window.addEventListener("load", function () {
-  const saveData = localStorage.getItem("csvData");
+  const saveData = localStorage.getItem("csvState");
   if (saveData) {
-    fullData = JSON.parse(saveData);
-    tempData = [...fullData];
-    filterData = fullData;
+    const state=JSON.parse(saveData);
+    fullData = state.fullData;
+    filterData = state.filterData;
+    tempData = state.tempData;
+    minPage = state.minPage;
+    selectsRow = state.selectsRow;
+    sortPos=state.sortPos;
+    search.value=state.searchText;
     showTable();
   }
 });
 
+// if click colums btn show header and you select the header using checkbox 
 colSeclection.addEventListener("click", function () {
   if (flagForClm) {
     showHeaderPannel.style.display = "block";
