@@ -1,0 +1,16 @@
+export const fileInput = document.getElementById("csvFile");
+export const tableBody = document.getElementById("table-body");
+export const tableHead = document.getElementById("table-head");
+export const rowsSelect = document.getElementById("rows");
+export const prev = document.getElementById("prev");
+export const next = document.getElementById("next");
+export const pageNum = document.getElementById("page-num");
+export const search = document.getElementById("search");
+export const loader = document.getElementById("loader");
+export const reset = document.getElementById("reset");
+export const popUpForm = document.getElementById("popUpForm");
+export const formData = document.getElementById("formData");
+export const closeBtn = document.getElementById("closeBtn");
+export const totalPages = document.getElementById("total-pages");
+export const colSeclection = document.getElementById("colSeclection");
+export const showHeaderPannel = document.getElementById("showHeaderPannel");
