@@ -3,8 +3,18 @@ import { state } from "./state.js";
 import { savetoLocal } from "./storage.js";
 import { showTable } from "./table.js";
 
+function debounce(func,delay){
+  let timer;
+  return function(...args){
+    clearTimeout(timer);
+    timer=setTimeout(()=>{
+      func.apply(this,args);
+    },delay);
+  }
+}
+
 // searching apply
-search.addEventListener("input", function () {
+function handleSearch() {
   const searchText = this.value.toLowerCase();
   state.searchText = searchText;
 
@@ -38,4 +48,6 @@ search.addEventListener("input", function () {
   state.minPage = 1;
   savetoLocal();
   showTable();
-});
+};
+
+search.addEventListener("input",debounce(handleSearch,500));
