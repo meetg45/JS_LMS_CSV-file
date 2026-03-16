@@ -55,8 +55,9 @@ window.addEventListener("load", function () {
   if (!saved) return;
 
   const savedState = JSON.parse(saved);
-
   Object.assign(state, savedState);
+  
+  state.firstTimeClick=true;
 
   if (state.filterData.length > 0) {
     showTable();
