@@ -1,4 +1,4 @@
-import { fileInput, loader } from "./js/dom.js";
+import { fileInput, loader , shwoPagination } from "./js/dom.js";
 import { parseAllCsv } from "./js/csvParser.js";
 import { showTable } from "./js/table.js";
 import { savetoLocal } from "./js/storage.js";
@@ -30,15 +30,13 @@ function changeData(event) {
     state.firstTimeClick = true;
     state.activeCheckBox = "";
 
-    // state.fullData = parseAllCsv(e.target.result);
-    // state.tempData = [...(state.fullData)];
-    // state.filterData = state.fullData;
     const data = parseAllCsv(e.target.result);
 
     state.fullData = data;
     state.filterData = [...data];
     state.tempData = [...data];
 
+    shwoPagination.style.display="block";
     savetoLocal();
     showTable();
   };
@@ -53,10 +51,11 @@ window.addEventListener("load", function () {
   const saved = localStorage.getItem("csvState");
 
   if (!saved) return;
-
+  
+  shwoPagination.style.display="block";
   const savedState = JSON.parse(saved);
   Object.assign(state, savedState);
-  
+
   state.firstTimeClick=true;
 
   if (state.filterData.length > 0) {

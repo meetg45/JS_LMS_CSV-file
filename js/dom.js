@@ -14,3 +14,4 @@ export const closeBtn = document.getElementById("closeBtn");
 export const totalPages = document.getElementById("total-pages");
 export const colSeclection = document.getElementById("colSeclection");
 export const showHeaderPannel = document.getElementById("showHeaderPannel");
+export const shwoPagination = document.getElementById("pagination");
