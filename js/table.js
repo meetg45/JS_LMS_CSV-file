@@ -9,7 +9,7 @@ export function getData() {
 // show table on frontend..
 export function showTable() {
   const data = getData();
-  totalPages.textContent = `/ ${Math.ceil(state.filterData.length / state.selectsRow)}`; //total page avilable
+  totalPages.textContent = `/ ${Math.ceil(state.filterData.length / state.selectsRow)}`; //total page available
 
   const checkBox = document.querySelectorAll(".hideCol:checked");
   state.activeCheckBox =

@@ -22,7 +22,7 @@ prev.addEventListener("click", function () {
   }
 });
 
-// accroding to page no. enter show the data
+// according to page no. enter show the data
 pageNum.addEventListener("change", function () {
   const enterVal = parseInt(this.value);
   const maxVal = Math.ceil(state.filterData.length / state.selectsRow);
